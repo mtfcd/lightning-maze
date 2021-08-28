@@ -167,7 +167,7 @@ impl Maze {
 
     pub fn lightup(&self) -> *const u8 {
         if let Some(cell) = &self.winner {
-            return cell.path.iter().flat_map(|p| [p.x as u8, p.y as u8]).collect::<Vec<u8>>().as_ptr()
+            return cell.path.iter().rev().flat_map(|p| [p.x as u8, p.y as u8]).collect::<Vec<u8>>().as_ptr()
         } else {
             return 0 as *const u8
         }
@@ -204,17 +204,6 @@ impl Maze {
             visited,
             winner: None
         }
-    }
-
-    pub fn clear_cells(&mut self) {
-        let (y, _) = self.h_walls.iter().enumerate().skip((self.width / 2) as usize).find(|(_, w)| **w == Wall::Open).unwrap();
-        let p =  Position {x: 0, y: y as u32};
-        let first_cell = Cell {
-            position: p,
-            path: vec![p],
-        };
-
-        self.cells = vec![first_cell];
     }
 
     pub fn width(&self) -> u32 {
